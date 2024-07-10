@@ -31,10 +31,10 @@ class Dataset(data.Dataset):
 
     def collate_fn(self, batch):
         tokens_ids, labels = zip(*batch)
-        tokens_ids = rnn.pad_sequence(tokens_ids, batch_first=True, padding_value=self.vocab['<pad>'])
+        tokens_ids_padded = rnn.pad_sequence(tokens_ids, batch_first=True, padding_value=self.vocab['<pad>'])
         # torch.tensor() doesn't accept tuples.
-        labels = [list(label) for label in labels]
-        return tokens_ids, torch.tensor(labels, dtype=torch.float)
+        labels_list = [list(label) for label in labels]
+        return tokens_ids_padded, torch.tensor(labels_list, dtype=torch.float)
 
 
 def get_dataset_path(filename):
